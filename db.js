@@ -23,6 +23,12 @@ db.exec(`
   );
 `);
 
+// ── Migrate existing databases (adds mc_password if missing) ─
+try {
+  db.exec(`ALTER TABLE submissions ADD COLUMN mc_password TEXT DEFAULT ''`);
+  console.log('✅ Migration: mc_password column added');
+} catch(e) { /* column already exists, safe to ignore */ }
+
 // ── Seed default admin if none exists ────────────────────────
 const adminCount = db.prepare('SELECT COUNT(*) as count FROM admins').get();
 if (adminCount.count === 0) {
