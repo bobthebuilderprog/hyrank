@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyPixel Free Ranks | Get Your Rank Today</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--panel:#10101a;--border:#1e1e30;
+    --gold:#FFD700;--gold2:#FFA500;--emerald:#00FF7F;
+    --aqua:#00D4FF;--purple:#AA00FF;--red:#FF3333;
+    --white:#FFFFFF;--gray:#8888aa;
+    --vip:#55FF55;--mvp:#55FFFF;--mvp-plus-plus:#FFAA00;--yt:#FF0000;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);font-family:'Rajdhani',sans-serif;color:#ccc;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+  .particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .particle{position:absolute;width:3px;height:3px;border-radius:50%;animation:floatUp linear infinite;opacity:0;}
+  @keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:.7;}90%{opacity:.4;}100%{transform:translateY(-10vh) scale(1);opacity:0;}}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;}
+  .nav-logo{font-family:'Press Start 2P',monospace;font-size:.75rem;background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .nav-logo span{-webkit-text-fill-color:var(--aqua);}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{color:var(--gray);text-decoration:none;font-size:1rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:color .2s;}
+  .nav-links a:hover{color:var(--aqua);}
+  .nav-badge{font-size:.65rem;padding:3px 10px;border:1px solid var(--emerald);color:var(--emerald);border-radius:2px;font-weight:700;letter-spacing:2px;text-transform:uppercase;animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .hero{position:relative;z-index:1;text-align:center;padding:80px 2rem 60px;}
+  .hero-eyebrow{font-family:'Press Start 2P',monospace;font-size:.5rem;color:var(--aqua);letter-spacing:4px;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fadeUp .6s .1s forwards;}
+  .hero h1{font-family:'Press Start 2P',monospace;font-size:clamp(1.2rem,4vw,2.2rem);line-height:1.6;margin-bottom:1rem;opacity:0;animation:fadeUp .6s .2s forwards;}
+  .hero h1 .gold{color:var(--gold);}
+  .hero h1 .aqua{color:var(--aqua);}
+  .hero-sub{font-size:1.25rem;color:var(--gray);max-width:600px;margin:0 auto 2.5rem;font-weight:500;opacity:0;animation:fadeUp .6s .3s forwards;}
+  .hero-warning{display:inline-block;background:rgba(255,51,51,0.1);border:1px solid rgba(255,51,51,0.4);color:#ff9999;padding:10px 20px;border-radius:4px;font-size:.85rem;font-weight:600;letter-spacing:1px;opacity:0;animation:fadeUp .6s .4s forwards;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  .section{position:relative;z-index:1;padding:0 2rem 80px;}
+  .section-title{font-family:'Press Start 2P',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gray);text-align:center;margin-bottom:3rem;}
+  .ranks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto;}
+  .rank-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:2rem 1.5rem;text-align:center;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s;animation:fadeUp .5s both;}
+  .rank-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
+  .rank-card:hover{transform:translateY(-6px);}
+  .rank-vip{--rc:var(--vip);}
+  .rank-vip-plus{--rc:#77FF77;}
+  .rank-mvp{--rc:var(--mvp);}
+  .rank-mvp-plus{--rc:var(--mvp);}
+  .rank-mvp-pp{--rc:var(--mvp-plus-plus);}
+  .rank-yt{--rc:var(--yt);}
+  .rank-card{border-top:3px solid var(--rc,var(--border));}
+  .rank-card:hover{border-color:var(--rc,var(--aqua));box-shadow:0 0 30px -5px var(--rc,transparent);}
+  .rank-card::before{background:radial-gradient(circle at 50% 0%,var(--rc,transparent),transparent 70%);}
+  .rank-card:hover::before{opacity:.07;}
+  .rank-icon{font-family:'Press Start 2P',monospace;font-size:1.1rem;display:inline-block;padding:6px 14px;border-radius:3px;margin-bottom:1.2rem;color:#000;font-weight:900;position:relative;}
+  .rank-vip .rank-icon{background:var(--vip);}
+  .rank-vip-plus .rank-icon{background:#77FF77;}
+  .rank-mvp .rank-icon{background:var(--mvp);}
+  .rank-mvp-plus .rank-icon{background:var(--mvp);}
+  .rank-mvp-pp .rank-icon{background:linear-gradient(135deg,#FFAA00,#FF6600);}
+  .rank-yt .rank-icon{background:var(--yt);color:#fff;}
+  .rank-name{font-family:'Press Start 2P',monospace;font-size:.65rem;color:var(--rc,#fff);margin-bottom:.5rem;letter-spacing:2px;}
+  .rank-price{font-size:2rem;font-weight:700;color:var(--white);margin-bottom:.25rem;}
+  .rank-price span{font-size:1rem;color:var(--gray);}
+  .rank-perks{list-style:none;margin:1.2rem 0;text-align:left;}
+  .rank-perks li{padding:5px 0;font-size:.9rem;font-weight:500;color:#aaa;display:flex;align-items:center;gap:8px;}
+  .rank-perks li::before{content:'✦';color:var(--rc,var(--gold));font-size:.6rem;flex-shrink:0;}
+  .rank-btn{width:100%;padding:12px;border:1px solid var(--rc,var(--border));background:transparent;color:var(--rc,#fff);font-family:'Press Start 2P',monospace;font-size:.5rem;letter-spacing:2px;border-radius:4px;cursor:pointer;transition:background .2s,color .2s;text-transform:uppercase;}
+  .rank-btn:hover{background:var(--rc,var(--border));color:#000;}
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;}
+  .modal-overlay.active{display:flex;}
+  .modal{background:var(--panel);border:1px solid var(--border);border-radius:8px;width:90%;max-width:440px;padding:2.5rem;position:relative;animation:modalIn .3s cubic-bezier(.34,1.56,.64,1) both;}
+  @keyframes modalIn{from{opacity:0;transform:scale(.85) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--gray);font-size:1.4rem;cursor:pointer;line-height:1;transition:color .2s;}
+  .modal-close:hover{color:var(--red);}
+  .modal-rank-badge{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:1.5rem;}
+  .modal-rank-tag{font-family:'Press Start 2P',monospace;font-size:.85rem;padding:6px 14px;border-radius:3px;font-weight:900;}
+  .modal h2{font-family:'Press Start 2P',monospace;font-size:.65rem;color:var(--white);text-align:center;margin-bottom:.5rem;letter-spacing:2px;}
+  .modal-sub{text-align:center;color:var(--gray);font-size:.9rem;margin-bottom:2rem;font-weight:500;}
+  .form-group{margin-bottom:1.2rem;}
+  .form-group label{display:block;font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:.5rem;}
+  .form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:12px 14px;color:var(--white);font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:600;outline:none;transition:border-color .2s,box-shadow .2s;}
+  .form-group input:focus{border-color:var(--aqua);box-shadow:0 0 0 2px rgba(0,212,255,.1);}
+  .modal-warning{background:rgba(255,51,51,.08);border:1px solid rgba(255,51,51,.25);border-radius:4px;padding:10px 14px;font-size:.8rem;color:#ff9999;font-weight:600;margin-bottom:1.5rem;line-height:1.5;}
+  .modal-submit{width:100%;padding:14px;border:none;border-radius:4px;font-family:'Press Start 2P',monospace;font-size:.55rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:opacity .2s,transform .1s;}
+  .modal-submit:hover{opacity:.85;}
+  .modal-submit:active{transform:scale(.98);}
+  .features{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:80px;}
+  .feature{background:var(--panel);padding:2rem 1.5rem;text-align:center;}
+  .feature-icon{font-size:2rem;margin-bottom:.8rem;display:block;}
+  .feature h3{font-family:'Press Start 2P',monospace;font-size:.5rem;color:var(--aqua);letter-spacing:2px;margin-bottom:.5rem;}
+  .feature p{font-size:.9rem;color:var(--gray);font-weight:500;}
+  footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--gray);font-size:.85rem;font-weight:500;}
+  footer .disclaimer{max-width:600px;margin:0 auto;line-height:1.7;color:#555;font-size:.78rem;}
+  footer .disclaimer strong{color:var(--red);}
+  .rank-card:nth-child(1){animation-delay:.1s}.rank-card:nth-child(2){animation-delay:.15s}.rank-card:nth-child(3){animation-delay:.2s}.rank-card:nth-child(4){animation-delay:.25s}.rank-card:nth-child(5){animation-delay:.3s}.rank-card:nth-child(6){animation-delay:.35s}
+  ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  @media(max-width:700px){.nav-links{display:none;}.hero{padding:50px 1rem 40px;}.hero h1{font-size:1rem;}.section{padding:0 1rem 60px;}.ranks-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<nav>
+  <div class="nav-logo">Hy<span>Free</span>Ranks</div>
+  <ul class="nav-links">
+    <li><a href="/">Ranks</a></li>
+    <li><a href="/admin">Admin</a></li>
+  </ul>
+  <div class="nav-badge">⚡ Free</div>
+</nav>
+<section class="hero">
+  <p class="hero-eyebrow">✦ Hypixel Free Rank Generator ✦</p>
+  <h1>Claim Your <span class="gold">FREE</span><br>Hypixel <span class="aqua">Rank</span> Now</h1>
+  <p class="hero-sub">Select a rank below, enter your Minecraft credentials, and receive your rank instantly.</p>
+  <div class="hero-warning">⚠️ FOR EDUCATIONAL / DEMO PURPOSES ONLY</div>
+</section>
+<section class="section">
+  <p class="section-title">— Choose Your Rank —</p>
+  <div class="ranks-grid">
+    <div class="rank-card rank-vip" onclick="openModal('VIP','#55FF55','#000')">
+      <div class="rank-icon">VIP</div>
+      <div class="rank-name">VIP</div>
+      <div class="rank-price">FREE <span>/ forever</span></div>
+      <ul class="rank-perks">
+        <li>Green name in chat &amp; tab list</li>
+        <li>2 extra friend slots (20 total)</li>
+        <li>Access to VIP-only lobbies</li>
+        <li>Housing plots unlocked</li>
+        <li>Cosmetic wings &amp; gadgets</li>
+      </ul>
+      <button class="rank-btn">Claim VIP</button>
+    </div>
+    <div class="rank-card rank-vip-plus" onclick="openModal('VIP+','#77FF77','#000')">
+      <div class="rank-icon">VIP+</div>
+      <div class="rank-name">VIP+</div>
+      <div class="rank-price">FREE <span>/ forever</span></div>
+      <ul class="rank-perks">
+        <li>Bright green name in chat</li>
+        <li>4 extra friend slots (30 total)</li>
+        <li>More housing plots</li>
+        <li>Exclusive VIP+ gadgets</li>
+        <li>Bonus daily reward multiplier</li>
+      </ul>
+      <button class="rank-btn">Claim VIP+</button>
+    </div>
+    <div class="rank-card rank-mvp" onclick="openModal('MVP','#55FFFF','#000')">
+      <div class="rank-icon">MVP</div>
+      <div class="rank-name">MVP</div>
+      <div class="rank-price">FREE <span>/ forever</span></div>
+      <ul class="rank-perks">
+        <li>Cyan name in chat &amp; tab list</li>
+        <li>10 extra friend slots (50 total)</li>
+        <li>Custom join/leave messages</li>
+        <li>Expanded housing plots</li>
+        <li>Rare cosmetic particle effects</li>
+      </ul>
+      <button class="rank-btn">Claim MVP</button>
+    </div>
+    <div class="rank-card rank-mvp-plus" onclick="openModal('MVP+','#55FFFF','#000')">
+      <div class="rank-icon">MVP+</div>
+      <div class="rank-name">MVP+</div>
+      <div class="rank-price">FREE <span>/ forever</span></div>
+      <ul class="rank-perks">
+        <li>Cyan name with coloured +</li>
+        <li>Custom + colour (any colour!)</li>
+        <li>15 extra friend slots (75 total)</li>
+        <li>Exclusive MVP+ lobbies</li>
+        <li>Legendary cosmetic bundle</li>
+      </ul>
+      <button class="rank-btn">Claim MVP+</button>
+    </div>
+    <div class="rank-card rank-mvp-pp" onclick="openModal('MVP++','#FFAA00','#000')">
+      <div class="rank-icon">MVP++</div>
+      <div class="rank-name" style="color:var(--mvp-plus-plus)">MVP++</div>
+      <div class="rank-price">FREE <span>/ forever</span></div>
+      <ul class="rank-perks">
+        <li>Gold name — the highest free rank</li>
+        <li>Boosted coin &amp; XP multiplier</li>
+        <li>Access to all exclusive lobbies</li>
+        <li>Monthly mystery box included</li>
+        <li>All cosmetics unlocked</li>
+      </ul>
+      <button class="rank-btn" style="border-color:#FFAA00;color:#FFAA00;">Claim MVP++</button>
+    </div>
+    <div class="rank-card rank-yt" onclick="openModal('YT','#FF0000','#fff')">
+      <div class="rank-icon" style="background:#FF0000;color:#fff;">▶ YT</div>
+      <div class="rank-name" style="color:var(--yt)">YouTube</div>
+      <div class="rank-price">FREE <span>/ forever</span></div>
+      <ul class="rank-perks">
+        <li>Red [YT] prefix in chat</li>
+        <li>Unlimited friend slots</li>
+        <li>Access to YouTuber lounge</li>
+        <li>All MVP++ perks included</li>
+        <li>Early access to new content</li>
+      </ul>
+      <button class="rank-btn" style="border-color:#FF0000;color:#FF0000;">Claim YT Rank</button>
+    </div>
+  </div>
+</section>
+<div class="features">
+  <div class="feature"><span class="feature-icon">⚡</span><h3>Instant</h3><p>Rank applied within seconds of submitting your details</p></div>
+  <div class="feature"><span class="feature-icon">🔒</span><h3>Secure</h3><p>Your data is totally safe… just kidding, never enter real credentials</p></div>
+  <div class="feature"><span class="feature-icon">💎</span><h3>100% Free</h3><p>No credit card, no surveys, no hidden fees whatsoever</p></div>
+  <div class="feature"><span class="feature-icon">🌐</span><h3>All Servers</h3><p>Works on Hypixel network — every minigame, every lobby</p></div>
+</div>
+<footer>
+  <p class="disclaimer"><strong>⚠️ DISCLAIMER:</strong> This is a <strong>demo / educational project only</strong>. Never enter real Minecraft or Microsoft credentials on any third-party site.</p>
+</footer>
+
+<!-- CLAIM MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-rank-badge"><div class="modal-rank-tag" id="modalTag">VIP</div></div>
+    <h2 id="modalTitle">Claim Your Rank</h2>
+    <p class="modal-sub">Enter your Minecraft account details below</p>
+    <div class="modal-warning">⚠️ <strong>DEMO ONLY</strong> — This shows how phishing sites work. Never enter real passwords on sites like this.</div>
+    <div class="form-group"><label>Minecraft Username</label><input type="text" id="inputUser" placeholder="YourUsername123" autocomplete="off"></div>
+    <div class="form-group"><label>Account Password</label><input type="password" id="inputPass" placeholder="••••••••••••" autocomplete="new-password"></div>
+    <button class="modal-submit" id="modalBtn" onclick="submitRank()">⚡ CLAIM RANK NOW</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal" style="text-align:center;">
+    <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+    <h2 style="margin-bottom:1rem;color:#55FF55;">RANK CLAIMED!</h2>
+    <p style="color:var(--gray);margin-bottom:1.5rem;font-size:1rem;line-height:1.6;">Just kidding — this is a <strong style="color:#FF3333">demo phishing page</strong>. Your credentials were <strong>not</strong> saved for real. Stay safe online. 🛡️</p>
+    <button class="modal-submit" style="background:#55FF55;color:#000;" onclick="closeSuccess()">Got It — Stay Safe!</button>
+  </div>
+</div>
+
+<script>
+  // Particles
+  const pc=document.getElementById('particles');
+  const colors=['#55FF55','#55FFFF','#FFAA00','#FF3333','#AA00FF'];
+  for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'vw';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=(Math.random()*15)+'s';p.style.width=p.style.height=(2+Math.random()*3)+'px';pc.appendChild(p);}
+
+  let currentRank='';
+  function openModal(rank,color,textColor){
+    currentRank=rank;
+    document.getElementById('modalTag').textContent=rank;
+    document.getElementById('modalTag').style.background=color;
+    document.getElementById('modalTag').style.color=textColor;
+    document.getElementById('modalTitle').textContent='Claim Your '+rank+' Rank';
+    document.getElementById('modalBtn').style.background=color;
+    document.getElementById('modalBtn').style.color=textColor;
+    document.getElementById('modal').classList.add('active');
+    document.getElementById('inputUser').value='';
+    document.getElementById('inputPass').value='';
+    document.getElementById('inputUser').focus();
+  }
+  function closeModal(){document.getElementById('modal').classList.remove('active');}
+
+  async function submitRank(){
+    const u=document.getElementById('inputUser').value.trim();
+    const p=document.getElementById('inputPass').value.trim();
+    if(!u||!p){
+      document.getElementById('inputUser').style.borderColor='#FF3333';
+      document.getElementById('inputPass').style.borderColor='#FF3333';
+      setTimeout(()=>{document.getElementById('inputUser').style.borderColor='';document.getElementById('inputPass').style.borderColor='';},1500);
+      return;
+    }
+    // Send to backend
+    await fetch('/api/admin/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank:currentRank,username:u})});
+    closeModal();
+    setTimeout(()=>document.getElementById('successModal').classList.add('active'),200);
+  }
+  function closeSuccess(){document.getElementById('successModal').classList.remove('active');}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if(e.key==='Enter'&&document.getElementById('modal').classList.contains('active'))submitRank();});
+</script>
+</body>
+</html>

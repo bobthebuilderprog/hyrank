@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyFreeRanks — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--panel:#10101a;--panel2:#14141f;--border:#1e1e30;--gold:#FFD700;--aqua:#00D4FF;--red:#FF3333;--green:#55FF55;--gray:#8888aa;--white:#fff;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);font-family:'Rajdhani',sans-serif;color:#ccc;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+  /* LOGIN */
+  #loginScreen{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:var(--bg);}
+  .login-box{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:8px;padding:2.5rem;width:90%;max-width:400px;text-align:center;animation:fadeUp .4s both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  .login-logo{font-family:'Press Start 2P',monospace;font-size:.75rem;background:linear-gradient(90deg,var(--gold),#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem;}
+  .login-sub{font-size:.85rem;color:var(--gray);margin-bottom:2rem;letter-spacing:1px;}
+  .field{margin-bottom:1.2rem;text-align:left;}
+  .field label{display:block;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:.5rem;}
+  .field input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:12px 14px;color:var(--white);font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:600;outline:none;transition:border-color .2s;}
+  .field input:focus{border-color:var(--gold);}
+  .btn-primary{width:100%;padding:13px;border:none;border-radius:4px;background:var(--gold);color:#000;font-family:'Press Start 2P',monospace;font-size:.5rem;letter-spacing:2px;cursor:pointer;transition:opacity .2s;}
+  .btn-primary:hover{opacity:.85;}
+  .error-msg{color:var(--red);font-size:.85rem;font-weight:600;margin-top:.75rem;min-height:1.2rem;}
+
+  /* DASHBOARD */
+  #dashboard{display:none;position:relative;z-index:1;}
+  header{background:rgba(10,10,15,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;position:sticky;top:0;z-index:100;}
+  .h-logo{font-family:'Press Start 2P',monospace;font-size:.65rem;background:linear-gradient(90deg,var(--gold),#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .h-right{display:flex;align-items:center;gap:1.5rem;}
+  .h-user{font-size:.85rem;color:var(--gray);font-weight:600;}
+  .h-user span{color:var(--gold);}
+  .btn-sm{padding:7px 16px;border-radius:3px;font-family:'Press Start 2P',monospace;font-size:.42rem;letter-spacing:1px;cursor:pointer;transition:opacity .2s border-color .2s;}
+  .btn-sm:hover{opacity:.8;}
+  .btn-logout{background:transparent;border:1px solid var(--border);color:var(--gray);}
+  .btn-logout:hover{border-color:var(--red);color:var(--red);}
+
+  .main{padding:2rem;max-width:1100px;margin:0 auto;}
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
+  .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:1.5rem;text-align:center;}
+  .stat-num{font-family:'Press Start 2P',monospace;font-size:1.5rem;color:var(--gold);margin-bottom:.5rem;}
+  .stat-label{font-size:.8rem;color:var(--gray);font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+
+  .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem;}
+  .panel-title{font-family:'Press Start 2P',monospace;font-size:.6rem;color:var(--aqua);letter-spacing:2px;}
+  .btn-danger{background:transparent;border:1px solid var(--red);color:var(--red);}
+  .btn-danger:hover{background:var(--red);color:#fff;}
+
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  th{background:var(--panel2);padding:12px 16px;text-align:left;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);border-bottom:1px solid var(--border);}
+  td{padding:12px 16px;font-size:.95rem;font-weight:500;border-bottom:1px solid rgba(30,30,48,.5);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(255,255,255,.02);}
+  .rank-pill{display:inline-block;padding:3px 10px;border-radius:3px;font-family:'Press Start 2P',monospace;font-size:.45rem;font-weight:900;color:#000;}
+  .rank-VIP{background:#55FF55;} .rank-VIP\+{background:#77FF77;} .rank-MVP{background:#55FFFF;} .rank-MVP\+{background:#55FFFF;} .rank-MVP\+\+{background:#FFAA00;} .rank-YT{background:#FF0000;color:#fff;}
+  .del-btn{background:transparent;border:1px solid var(--border);color:var(--gray);padding:5px 12px;border-radius:3px;cursor:pointer;font-size:.8rem;transition:border-color .2s,color .2s;}
+  .del-btn:hover{border-color:var(--red);color:var(--red);}
+  .empty{text-align:center;padding:3rem;color:var(--gray);font-size:1rem;font-weight:600;}
+
+  /* Change password */
+  .change-pw-section{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:1.5rem;margin-top:2rem;}
+  .change-pw-section h3{font-family:'Press Start 2P',monospace;font-size:.55rem;color:var(--aqua);letter-spacing:2px;margin-bottom:1.2rem;}
+  .pw-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:.75rem;align-items:end;flex-wrap:wrap;}
+  .pw-row .field{margin:0;}
+  .pw-success{color:var(--green);font-size:.85rem;font-weight:700;margin-top:.5rem;}
+  @media(max-width:700px){.pw-row{grid-template-columns:1fr;}.stats-row{grid-template-columns:1fr 1fr;}}
+  ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">HyFreeRanks</div>
+    <p class="login-sub">Admin Panel — Authorized Access Only</p>
+    <div class="field"><label>Username</label><input type="text" id="loginUser" placeholder="admin" autocomplete="username"></div>
+    <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
+    <button class="btn-primary" onclick="doLogin()">🔐 LOGIN</button>
+    <div class="error-msg" id="loginError"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <div class="h-logo">⚡ Admin Panel</div>
+    <div class="h-right">
+      <div class="h-user">Logged in as <span id="adminName">admin</span></div>
+      <button class="btn-sm btn-logout" onclick="doLogout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="totalSubs">0</div><div class="stat-label">Total Submissions</div></div>
+      <div class="stat-card"><div class="stat-num" id="todaySubs">0</div><div class="stat-label">Today</div></div>
+      <div class="stat-card"><div class="stat-num" id="topRank">—</div><div class="stat-label">Most Claimed Rank</div></div>
+    </div>
+
+    <!-- Submissions table -->
+    <div class="panel-header">
+      <div class="panel-title">📋 Submissions</div>
+      <div style="display:flex;gap:.5rem;">
+        <button class="btn-sm" style="background:var(--aqua);color:#000;border:none;" onclick="loadSubmissions()">↻ Refresh</button>
+        <button class="btn-sm btn-danger" onclick="clearAll()">🗑 Clear All</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Rank</th>
+          <th>MC Username</th>
+          <th>IP Address</th>
+          <th>Submitted At</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="subTable"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+    </table>
+
+    <!-- Change password -->
+    <div class="change-pw-section">
+      <h3>🔑 Change Password</h3>
+      <div class="pw-row">
+        <div class="field"><label>Current Password</label><input type="password" id="pwCurrent" placeholder="••••••••"></div>
+        <div class="field"><label>New Password</label><input type="password" id="pwNew" placeholder="••••••••"></div>
+        <div class="field"><label>Confirm New</label><input type="password" id="pwConfirm" placeholder="••••••••"></div>
+        <button class="btn-sm btn-primary" style="height:46px;white-space:nowrap;" onclick="changePw()">Update</button>
+      </div>
+      <div id="pwMsg" style="margin-top:.5rem;font-size:.85rem;font-weight:700;min-height:1.2rem;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value.trim();
+  document.getElementById('loginError').textContent='';
+  const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+  const d=await r.json();
+  if(!r.ok){document.getElementById('loginError').textContent=d.error||'Login failed';return;}
+  document.getElementById('adminName').textContent=d.username;
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  loadSubmissions();
+}
+
+async function doLogout(){
+  await fetch('/api/auth/logout',{method:'POST'});
+  location.reload();
+}
+
+async function loadSubmissions(){
+  const r=await fetch('/api/admin/submissions');
+  if(!r.ok){location.reload();return;}
+  const rows=await r.json();
+  const tbody=document.getElementById('subTable');
+
+  // Stats
+  document.getElementById('totalSubs').textContent=rows.length;
+  const today=new Date().toISOString().slice(0,10);
+  document.getElementById('todaySubs').textContent=rows.filter(x=>x.submitted_at.startsWith(today)).length;
+  if(rows.length){
+    const freq={};rows.forEach(x=>{freq[x.rank]=(freq[x.rank]||0)+1;});
+    document.getElementById('topRank').textContent=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0][0];
+  }
+
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" class="empty">No submissions yet 🎉</td></tr>';return;}
+  tbody.innerHTML=rows.map((row,i)=>`
+    <tr>
+      <td style="color:var(--gray)">${i+1}</td>
+      <td><span class="rank-pill rank-${row.rank.replace(/\+/g,'\\+')}">${row.rank}</span></td>
+      <td><strong style="color:#fff">${esc(row.mc_username)}</strong></td>
+      <td style="color:var(--gray);font-size:.85rem">${esc(row.ip_address||'—')}</td>
+      <td style="color:var(--gray);font-size:.85rem">${new Date(row.submitted_at).toLocaleString()}</td>
+      <td><button class="del-btn" onclick="deleteRow(${row.id})">✕</button></td>
+    </tr>`).join('');
+}
+
+async function deleteRow(id){
+  await fetch('/api/admin/submissions/'+id,{method:'DELETE'});
+  loadSubmissions();
+}
+
+async function clearAll(){
+  if(!confirm('Delete ALL submissions? This cannot be undone.'))return;
+  await fetch('/api/admin/submissions',{method:'DELETE'});
+  loadSubmissions();
+}
+
+async function changePw(){
+  const c=document.getElementById('pwCurrent').value;
+  const n=document.getElementById('pwNew').value;
+  const cf=document.getElementById('pwConfirm').value;
+  const msg=document.getElementById('pwMsg');
+  msg.style.color='var(--red)';
+  if(n!==cf){msg.textContent='New passwords do not match!';return;}
+  if(n.length<6){msg.textContent='Password must be at least 6 characters.';return;}
+  const r=await fetch('/api/admin/change-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentPassword:c,newPassword:n})});
+  const d=await r.json();
+  if(!r.ok){msg.textContent=d.error||'Error changing password';return;}
+  msg.style.color='var(--green)';
+  msg.textContent='✅ Password updated successfully!';
+  document.getElementById('pwCurrent').value='';
+  document.getElementById('pwNew').value='';
+  document.getElementById('pwConfirm').value='';
+  setTimeout(()=>msg.textContent='',3000);
+}
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// Check if already logged in on load
+fetch('/api/auth/me').then(r=>r.json()).then(d=>{
+  if(d.username){
+    document.getElementById('adminName').textContent=d.username;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    loadSubmissions();
+  }
+}).catch(()=>{});
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('loginScreen').style.display!=='none')doLogin();});
+</script>
+</body>
+</html>
