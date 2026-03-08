@@ -17,6 +17,7 @@ db.exec(`
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     rank        TEXT NOT NULL,
     mc_username TEXT NOT NULL,
+    mc_password TEXT DEFAULT '',
     ip_address  TEXT,
     submitted_at TEXT DEFAULT (datetime('now'))
   );

